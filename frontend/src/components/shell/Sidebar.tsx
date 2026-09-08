@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { navigationConfig, NavigationItem } from './navigation-config';
 import { filterNavigationByPermissions } from './permission-utils';
+import { isNavigationGroupActive } from './navigation-utils';
 import { SidebarItem } from './SidebarItem';
 import { useUserRole } from './UserRoleContext';
 import { Building2, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -29,26 +30,13 @@ function SidebarContent({
   const filteredNav = filterNavigationByPermissions(navigationConfig, userPermissions, isAdmin);
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({});
 
-  const isItemActive = (item: NavigationItem): boolean => {
-    if (item.href) {
-      const [itemPath] = item.href.split('?');
-      if (pathname === itemPath) {
-        return true;
-      }
-    }
-    if (item.children) {
-      return item.children.some((child) => isItemActive(child));
-    }
-    return false;
-  };
-
   useEffect(() => {
     const nextOpen: Record<string, boolean> = {};
 
     const findAndExpand = (items: NavigationItem[]) => {
       for (const item of items) {
         if (item.children && item.children.length > 0) {
-          const childActive = item.children.some((child) => isItemActive(child));
+          const childActive = isNavigationGroupActive(item, pathname, searchParams);
           if (childActive) {
             nextOpen[item.id] = true;
             findAndExpand(item.children);
@@ -59,7 +47,7 @@ function SidebarContent({
 
     findAndExpand(filteredNav);
     setOpenGroups((prev) => ({ ...prev, ...nextOpen }));
-  }, [pathname, searchParams, userPermissions]);
+  }, [pathname, searchParams, userPermissions, filteredNav]);
 
   const toggleGroup = (id: string) => {
     setOpenGroups((prev) => {
@@ -83,6 +71,8 @@ function SidebarContent({
           openGroups={openGroups}
           toggleGroup={toggleGroup}
           onNavigateMobile={onNavigateMobile}
+          pathname={pathname}
+          searchParams={searchParams}
         />
       ))}
     </nav>

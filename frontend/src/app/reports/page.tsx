@@ -84,7 +84,7 @@ export default function ReportsPage() {
               </div>
             </div>
           ) : (
-            <div className="text-xs text-slate-400 py-8 text-center">Click 'Generate Report Preview' to inspect live report data.</div>
+            <div className="text-xs text-slate-400 py-8 text-center">Click &apos;Generate Report Preview&apos; to inspect live report data.</div>
           )}
         </div>
       </div>

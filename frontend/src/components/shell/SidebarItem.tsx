@@ -2,9 +2,13 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import { NavigationItem } from './navigation-config';
 import { ChevronRight } from 'lucide-react';
+import {
+  isNavigationItemActive,
+  isNavigationGroupActive,
+  SearchParamsLike,
+} from './navigation-utils';
 
 interface SidebarItemProps {
   item: NavigationItem;
@@ -13,6 +17,8 @@ interface SidebarItemProps {
   openGroups: Record<string, boolean>;
   toggleGroup: (id: string) => void;
   onNavigateMobile?: () => void;
+  pathname: string;
+  searchParams?: SearchParamsLike | null;
 }
 
 export function SidebarItem({
@@ -22,27 +28,13 @@ export function SidebarItem({
   openGroups,
   toggleGroup,
   onNavigateMobile,
+  pathname,
+  searchParams,
 }: SidebarItemProps) {
-  const pathname = usePathname();
   const [showTooltip, setShowTooltip] = useState(false);
 
-  // Check if current route matches this item or any of its children recursively
-  const isItemActive = (navItem: NavigationItem): boolean => {
-    if (navItem.href) {
-      const [itemPath] = navItem.href.split('?');
-      if (pathname === itemPath) {
-        return true;
-      }
-    }
-
-    if (navItem.children && navItem.children.length > 0) {
-      return navItem.children.some((child) => isItemActive(child));
-    }
-
-    return false;
-  };
-
-  const isActive = isItemActive(item);
+  const isLeafActive = isNavigationItemActive(item, pathname, searchParams);
+  const isGroupActive = isNavigationGroupActive(item, pathname, searchParams);
   const hasChildren = item.children && item.children.length > 0;
   const isOpen = !!openGroups[item.id];
   const Icon = item.icon;
@@ -68,12 +60,12 @@ export function SidebarItem({
             href={item.href}
             onClick={onNavigateMobile}
             className={`p-2.5 rounded-xl transition-all ${
-              isActive
+              isLeafActive
                 ? 'bg-[#001B61] text-white shadow-md'
                 : 'text-[#101720] hover:bg-slate-200/70 hover:text-[#001B61]'
             }`}
           >
-            {Icon && <Icon className={`w-5 h-5 ${isActive ? 'text-[#FFA800]' : 'text-[#101720]'}`} />}
+            {Icon && <Icon className={`w-5 h-5 ${isLeafActive ? 'text-[#FFA800]' : 'text-[#101720]'}`} />}
           </Link>
 
           {/* Hover Tooltip for Collapsed Sidebar */}
@@ -91,7 +83,7 @@ export function SidebarItem({
         href={item.href}
         onClick={onNavigateMobile}
         className={`flex items-center gap-3 ${indentClass} rounded-xl transition-all ${
-          isActive
+          isLeafActive
             ? 'bg-[#001B61] text-white font-bold shadow-md'
             : 'text-[#101720] hover:bg-slate-200/70 hover:text-[#001B61]'
         }`}
@@ -99,7 +91,7 @@ export function SidebarItem({
         {Icon && (
           <Icon
             className={`w-4 h-4 shrink-0 ${
-              isActive ? 'text-[#FFA800]' : 'text-slate-500 group-hover:text-[#001B61]'
+              isLeafActive ? 'text-[#FFA800]' : 'text-slate-500 group-hover:text-[#001B61]'
             }`}
           />
         )}
@@ -120,12 +112,12 @@ export function SidebarItem({
           type="button"
           onClick={() => toggleGroup(item.id)}
           className={`p-2.5 rounded-xl transition-all ${
-            isActive
+            isGroupActive
               ? 'bg-[#001B61] text-white shadow-md'
               : 'text-[#101720] hover:bg-slate-200/70 hover:text-[#001B61]'
           }`}
         >
-          {Icon && <Icon className={`w-5 h-5 ${isActive ? 'text-[#FFA800]' : 'text-[#101720]'}`} />}
+          {Icon && <Icon className={`w-5 h-5 ${isGroupActive ? 'text-[#FFA800]' : 'text-[#101720]'}`} />}
         </button>
 
         {/* Hover Popover showing sub-items */}
@@ -143,6 +135,8 @@ export function SidebarItem({
                 openGroups={openGroups}
                 toggleGroup={toggleGroup}
                 onNavigateMobile={onNavigateMobile}
+                pathname={pathname}
+                searchParams={searchParams}
               />
             ))}
           </div>
@@ -159,9 +153,9 @@ export function SidebarItem({
         onClick={() => toggleGroup(item.id)}
         aria-expanded={isOpen}
         className={`w-full flex items-center justify-between ${indentClass} rounded-xl transition-all ${
-          isActive && !isOpen
+          isGroupActive && !isOpen
             ? 'bg-[#001B61]/10 text-[#001B61] font-bold border-l-4 border-[#001B61]'
-            : isActive
+            : isGroupActive
             ? 'text-[#001B61] font-bold bg-slate-200/50'
             : 'text-[#101720] hover:bg-slate-200/70 hover:text-[#001B61]'
         }`}
@@ -170,7 +164,7 @@ export function SidebarItem({
           {Icon && (
             <Icon
               className={`w-4 h-4 shrink-0 ${
-                isActive ? 'text-[#001B61]' : 'text-slate-500'
+                isGroupActive ? 'text-[#001B61]' : 'text-slate-500'
               }`}
             />
           )}
@@ -195,6 +189,8 @@ export function SidebarItem({
               openGroups={openGroups}
               toggleGroup={toggleGroup}
               onNavigateMobile={onNavigateMobile}
+              pathname={pathname}
+              searchParams={searchParams}
             />
           ))}
         </div>

@@ -80,7 +80,7 @@ export default function DashboardPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Today's Attendance Overview */}
           <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-2xs">
-            <h2 className="text-sm font-bold text-slate-900 mb-3">Today's Attendance by Class</h2>
+            <h2 className="text-sm font-bold text-slate-900 mb-3">Today&apos;s Attendance by Class</h2>
             <div className="space-y-3">
               {[
                 { class: 'Grade 1 - Section A', present: 28, total: 30, pct: 93.3 },
