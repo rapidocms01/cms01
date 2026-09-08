@@ -3,18 +3,19 @@
   "version": "1.0.0",
   "private": true,
   "workspaces": [
-    "apps/*",
+    "frontend",
+    "backend",
     "packages/*"
   ],
   "scripts": {
-    "dev:backend": "npm --prefix apps/backend run start:dev",
-    "dev:frontend": "npm --prefix apps/frontend run dev",
+    "dev:backend": "npm --prefix backend run start:dev",
+    "dev:frontend": "npm --prefix frontend run dev",
     "build:common": "npm --prefix packages/common run build",
-    "build:backend": "npm --prefix apps/backend run build",
-    "build:frontend": "npm --prefix apps/frontend run build",
-    "build": "npm --prefix packages/common run build && npm --prefix apps/backend run build && npm --prefix apps/frontend run build",
-    "test": "npm --prefix packages/common run test && npm --prefix apps/backend run test",
-    "typecheck": "npm --prefix packages/common run typecheck && npm --prefix apps/backend run typecheck && npm --prefix apps/frontend run typecheck",
-    "lint": "npm --prefix apps/backend run lint && npm --prefix apps/frontend run lint"
+    "build:backend": "npm --prefix backend run build",
+    "build:frontend": "npm --prefix frontend run build",
+    "build": "npm --prefix packages/common run build && npm --prefix backend run build && npm --prefix frontend run build",
+    "test": "npm --prefix packages/common run test && npm --prefix backend run test",
+    "typecheck": "npm --prefix packages/common run typecheck && npm --prefix backend run typecheck && npm --prefix frontend run typecheck",
+    "lint": "npm --prefix backend run lint && npm --prefix frontend run lint"
   }
 }
