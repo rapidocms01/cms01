@@ -1,0 +1,20 @@
+{
+  "name": "school-cms-saas",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:backend": "npm --prefix apps/backend run start:dev",
+    "dev:frontend": "npm --prefix apps/frontend run dev",
+    "build:common": "npm --prefix packages/common run build",
+    "build:backend": "npm --prefix apps/backend run build",
+    "build:frontend": "npm --prefix apps/frontend run build",
+    "build": "npm --prefix packages/common run build && npm --prefix apps/backend run build && npm --prefix apps/frontend run build",
+    "test": "npm --prefix packages/common run test && npm --prefix apps/backend run test",
+    "typecheck": "npm --prefix packages/common run typecheck && npm --prefix apps/backend run typecheck && npm --prefix apps/frontend run typecheck",
+    "lint": "npm --prefix apps/backend run lint && npm --prefix apps/frontend run lint"
+  }
+}
