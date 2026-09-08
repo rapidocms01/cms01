@@ -23,7 +23,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   return (
     <UserRoleProvider>
-      <div className="flex min-h-screen bg-slate-50 relative overflow-hidden">
+      <div className="flex min-h-screen bg-[#F8FAFC] relative overflow-hidden font-sans">
         {/* Desktop Sidebar (hidden on mobile) */}
         <div className="hidden lg:block">
           <Sidebar
@@ -37,16 +37,16 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <div className="lg:hidden fixed inset-0 z-50 flex">
             {/* Backdrop Overlay */}
             <div
-              className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs transition-opacity"
+              className="fixed inset-0 bg-[#101720]/60 backdrop-blur-xs transition-opacity"
               onClick={() => setIsMobileOpen(false)}
             />
 
             {/* Off-Canvas Sidebar Content */}
-            <div className="relative flex flex-col w-72 max-w-full bg-slate-900 shadow-2xl z-10 animate-in slide-in-from-left duration-200">
+            <div className="relative flex flex-col w-72 max-w-full bg-[#F5F5F5] rounded-r-2xl shadow-2xl z-10 animate-in slide-in-from-left duration-200 border-r border-slate-200">
               <button
                 type="button"
                 onClick={() => setIsMobileOpen(false)}
-                className="absolute top-3 right-3 p-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-md z-30"
+                className="absolute top-3 right-3 p-1.5 text-slate-500 hover:text-[#001B61] hover:bg-slate-200 rounded-xl z-30"
                 aria-label="Close Mobile Menu"
               >
                 <X className="w-5 h-5" />

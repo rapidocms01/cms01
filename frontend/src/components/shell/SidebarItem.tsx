@@ -50,29 +50,35 @@ export function SidebarItem({
   // Level-based indentation & styling
   const indentClass =
     level === 0
-      ? 'px-3 py-2 text-xs font-semibold'
+      ? 'px-3 py-2.5 text-xs font-semibold'
       : level === 1
-      ? 'pl-8 pr-3 py-1.5 text-xs font-medium'
+      ? 'pl-8 pr-3 py-2 text-xs font-medium'
       : 'pl-11 pr-3 py-1.5 text-[11px] font-medium';
 
   // Render direct link (no children)
   if (!hasChildren && item.href) {
     if (isCollapsed && level === 0) {
       return (
-        <div className="relative flex justify-center py-2" onMouseEnter={() => setShowTooltip(true)} onMouseLeave={() => setShowTooltip(false)}>
+        <div
+          className="relative flex justify-center py-1.5"
+          onMouseEnter={() => setShowTooltip(true)}
+          onMouseLeave={() => setShowTooltip(false)}
+        >
           <Link
             href={item.href}
             onClick={onNavigateMobile}
-            className={`p-2 rounded-lg transition-colors ${
-              isActive ? 'bg-blue-600 text-white shadow-xs' : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+            className={`p-2.5 rounded-xl transition-all ${
+              isActive
+                ? 'bg-[#001B61] text-white shadow-md'
+                : 'text-[#101720] hover:bg-slate-200/70 hover:text-[#001B61]'
             }`}
           >
-            {Icon && <Icon className="w-5 h-5" />}
+            {Icon && <Icon className={`w-5 h-5 ${isActive ? 'text-[#FFA800]' : 'text-[#101720]'}`} />}
           </Link>
 
-          {/* Hover Tooltip */}
+          {/* Hover Tooltip for Collapsed Sidebar */}
           {showTooltip && (
-            <div className="absolute left-16 top-1/2 -translate-y-1/2 z-50 px-2.5 py-1 bg-slate-800 text-white text-xs font-medium rounded-md whitespace-nowrap shadow-md border border-slate-700">
+            <div className="absolute left-16 top-1/2 -translate-y-1/2 z-50 px-3 py-1.5 bg-[#001B61] text-white text-xs font-semibold rounded-lg whitespace-nowrap shadow-xl border border-blue-900">
               {item.label}
             </div>
           )}
@@ -84,40 +90,48 @@ export function SidebarItem({
       <Link
         href={item.href}
         onClick={onNavigateMobile}
-        className={`flex items-center gap-3 ${indentClass} rounded-md transition-all ${
+        className={`flex items-center gap-3 ${indentClass} rounded-xl transition-all ${
           isActive
-            ? 'bg-blue-600 text-white font-semibold shadow-xs'
-            : 'text-slate-300 hover:bg-slate-800/80 hover:text-white'
+            ? 'bg-[#001B61] text-white font-bold shadow-md'
+            : 'text-[#101720] hover:bg-slate-200/70 hover:text-[#001B61]'
         }`}
       >
-        {Icon && <Icon className="w-4 h-4 shrink-0" />}
+        {Icon && (
+          <Icon
+            className={`w-4 h-4 shrink-0 ${
+              isActive ? 'text-[#FFA800]' : 'text-slate-500 group-hover:text-[#001B61]'
+            }`}
+          />
+        )}
         <span className="truncate">{item.label}</span>
       </Link>
     );
   }
 
-  // Render Collapsible Group Header (with children)
+  // Render Collapsible Group Header in Desktop Collapsed Mode
   if (isCollapsed && level === 0) {
     return (
       <div
-        className="relative flex justify-center py-2 group cursor-pointer"
+        className="relative flex justify-center py-1.5 group cursor-pointer"
         onMouseEnter={() => setShowTooltip(true)}
         onMouseLeave={() => setShowTooltip(false)}
       >
         <button
           type="button"
           onClick={() => toggleGroup(item.id)}
-          className={`p-2 rounded-lg transition-colors ${
-            isActive ? 'bg-blue-900/60 text-blue-400 border border-blue-700/50' : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+          className={`p-2.5 rounded-xl transition-all ${
+            isActive
+              ? 'bg-[#001B61] text-white shadow-md'
+              : 'text-[#101720] hover:bg-slate-200/70 hover:text-[#001B61]'
           }`}
         >
-          {Icon && <Icon className="w-5 h-5" />}
+          {Icon && <Icon className={`w-5 h-5 ${isActive ? 'text-[#FFA800]' : 'text-[#101720]'}`} />}
         </button>
 
         {/* Hover Popover showing sub-items */}
         {showTooltip && (
-          <div className="absolute left-16 top-0 z-50 min-w-48 bg-slate-900 border border-slate-800 rounded-lg shadow-xl p-2 space-y-1">
-            <div className="px-2 py-1 text-xs font-bold text-slate-200 border-b border-slate-800 uppercase tracking-wider">
+          <div className="absolute left-16 top-0 z-50 min-w-52 bg-[#001B61] text-white border border-blue-900 rounded-xl shadow-2xl p-2.5 space-y-1">
+            <div className="px-2 py-1 text-[11px] font-bold text-[#FFA800] border-b border-blue-900/80 uppercase tracking-wider">
               {item.label}
             </div>
             {item.children?.map((child) => (
@@ -144,21 +158,27 @@ export function SidebarItem({
         type="button"
         onClick={() => toggleGroup(item.id)}
         aria-expanded={isOpen}
-        className={`w-full flex items-center justify-between ${indentClass} rounded-md transition-all ${
+        className={`w-full flex items-center justify-between ${indentClass} rounded-xl transition-all ${
           isActive && !isOpen
-            ? 'bg-slate-800/90 text-blue-400 font-semibold border-l-2 border-blue-500'
+            ? 'bg-[#001B61]/10 text-[#001B61] font-bold border-l-4 border-[#001B61]'
             : isActive
-            ? 'text-white font-semibold'
-            : 'text-slate-300 hover:bg-slate-800/60 hover:text-white'
+            ? 'text-[#001B61] font-bold bg-slate-200/50'
+            : 'text-[#101720] hover:bg-slate-200/70 hover:text-[#001B61]'
         }`}
       >
         <div className="flex items-center gap-3 min-w-0">
-          {Icon && <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-blue-400' : 'text-slate-400'}`} />}
+          {Icon && (
+            <Icon
+              className={`w-4 h-4 shrink-0 ${
+                isActive ? 'text-[#001B61]' : 'text-slate-500'
+              }`}
+            />
+          )}
           <span className="truncate">{item.label}</span>
         </div>
         <ChevronRight
           className={`w-3.5 h-3.5 shrink-0 text-slate-400 transition-transform duration-200 ${
-            isOpen ? 'rotate-90 text-white' : ''
+            isOpen ? 'rotate-90 text-[#001B61]' : ''
           }`}
         />
       </button>

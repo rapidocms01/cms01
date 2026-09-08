@@ -31,15 +31,9 @@ function SidebarContent({
 
   const isItemActive = (item: NavigationItem): boolean => {
     if (item.href) {
-      const [itemPath, itemQuery] = item.href.split('?');
+      const [itemPath] = item.href.split('?');
       if (pathname === itemPath) {
-        if (!itemQuery) return true;
-        const params = new URLSearchParams(itemQuery);
-        let match = true;
-        params.forEach((val, key) => {
-          if (searchParams.get(key) !== val) match = false;
-        });
-        return match;
+        return true;
       }
     }
     if (item.children) {
@@ -79,7 +73,7 @@ function SidebarContent({
   };
 
   return (
-    <nav className="flex-1 px-2 py-4 space-y-1 overflow-y-auto min-h-0 custom-scrollbar">
+    <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto min-h-0 sidebar-scrollbar">
       {filteredNav.map((item) => (
         <SidebarItem
           key={item.id}
@@ -103,19 +97,20 @@ export function Sidebar({
   return (
     <aside
       className={`${
-        isCollapsed ? 'w-16' : 'w-64'
-      } bg-slate-900 text-slate-300 flex flex-col h-screen border-r border-slate-800 transition-all duration-200 shrink-0 select-none z-20`}
+        isCollapsed ? 'w-18' : 'w-64'
+      } bg-[#F5F5F5] text-[#101720] flex flex-col h-screen rounded-r-2xl lg:rounded-r-3xl border-r border-slate-200/80 shadow-md transition-all duration-200 shrink-0 select-none z-20`}
     >
       {/* Brand Header */}
-      <div className="h-16 px-4 border-b border-slate-800 flex items-center justify-between shrink-0">
+      <div className="h-16 px-4 border-b border-slate-200/80 flex items-center justify-between shrink-0">
         <div className="flex items-center gap-3 min-w-0">
-          <div className="w-9 h-9 rounded-lg bg-blue-600 flex items-center justify-center text-white font-bold text-base shadow-sm shrink-0">
+          <div className="w-9 h-9 rounded-xl bg-[#001B61] flex items-center justify-center text-white font-black text-base shadow-md shrink-0 relative">
             G
+            <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-[#FFA800] rounded-full border-2 border-[#F5F5F5]" />
           </div>
           {!isCollapsed && (
             <div className="min-w-0">
-              <h1 className="font-bold text-white text-sm leading-tight truncate">Greenwood Int.</h1>
-              <p className="text-[10px] text-slate-400 font-medium truncate">School Management CMS</p>
+              <h1 className="font-extrabold text-[#101720] text-sm leading-tight truncate">Greenwood Int.</h1>
+              <p className="text-[10px] text-slate-500 font-semibold truncate">School Management CMS</p>
             </div>
           )}
         </div>
@@ -125,7 +120,7 @@ export function Sidebar({
           <button
             type="button"
             onClick={onToggleCollapse}
-            className="hidden lg:flex p-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-md transition-colors"
+            className="hidden lg:flex p-1.5 text-slate-500 hover:text-[#001B61] hover:bg-slate-200/70 rounded-lg transition-colors"
             title={isCollapsed ? 'Expand Sidebar' : 'Collapse Sidebar'}
           >
             {isCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
@@ -133,22 +128,22 @@ export function Sidebar({
         )}
       </div>
 
-      {/* Independent Vertical Scroll Area Wrapped in Suspense */}
-      <Suspense fallback={<div className="p-4 text-xs text-slate-500">Loading navigation...</div>}>
+      {/* Independent Vertical Scroll Area */}
+      <Suspense fallback={<div className="p-4 text-xs text-slate-400">Loading navigation...</div>}>
         <SidebarContent isCollapsed={isCollapsed} onNavigateMobile={onNavigateMobile} />
       </Suspense>
 
       {/* Bottom Platform Admin Console Link */}
-      <div className="p-2 border-t border-slate-800 bg-slate-950/60 shrink-0">
+      <div className="p-3 border-t border-slate-200/80 bg-slate-200/40 rounded-br-2xl lg:rounded-br-3xl shrink-0">
         <Link
           href="/platform"
           onClick={onNavigateMobile}
-          className={`flex items-center gap-3 px-3 py-2 text-xs font-semibold text-slate-400 hover:text-white rounded-md hover:bg-slate-800 transition-colors ${
+          className={`flex items-center gap-3 px-3 py-2 text-xs font-bold text-[#101720] hover:text-[#001B61] hover:bg-slate-200/80 rounded-xl transition-all ${
             isCollapsed ? 'justify-center' : ''
           }`}
           title="Platform Admin Console"
         >
-          <Building2 className="w-4 h-4 text-amber-500 shrink-0" />
+          <Building2 className="w-4 h-4 text-[#FFA800] shrink-0" />
           {!isCollapsed && <span className="truncate">Platform Admin Console</span>}
         </Link>
       </div>

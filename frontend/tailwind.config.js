@@ -21,12 +21,36 @@ module.exports = {
         ring: 'hsl(var(--ring))',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
+        navy: {
+          DEFAULT: '#001B61',
+          50: '#e6ebf5',
+          100: '#cce3f0',
+          800: '#00164e',
+          900: '#001B61',
+        },
+        amberAccent: {
+          DEFAULT: '#FFA800',
+          400: '#ffb726',
+          500: '#FFA800',
+          600: '#e69700',
+        },
+        charcoal: {
+          DEFAULT: '#101720',
+          700: '#232d3b',
+          800: '#19212c',
+          900: '#101720',
+        },
+        softWhite: {
+          DEFAULT: '#F5F5F5',
+          100: '#F5F5F5',
+          200: '#EBEBEB',
+        },
         primary: {
-          DEFAULT: '#1e3a8a',
+          DEFAULT: '#001B61',
           foreground: '#ffffff',
         },
         secondary: {
-          DEFAULT: '#0f172a',
+          DEFAULT: '#101720',
           foreground: '#ffffff',
         },
         destructive: {
@@ -38,8 +62,8 @@ module.exports = {
           foreground: '#64748b',
         },
         accent: {
-          DEFAULT: '#f8fafc',
-          foreground: '#0f172a',
+          DEFAULT: '#F5F5F5',
+          foreground: '#101720',
         },
       },
     },
